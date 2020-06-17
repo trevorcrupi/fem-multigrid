@@ -1,0 +1,4 @@
+pdepoly([0 1 1 0], [0 0 1 1]);
+save MyDomain gd sf ns;
+g = decsg(gd, sf, ns);
+model = createpde(1);
