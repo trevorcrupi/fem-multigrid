@@ -4,7 +4,9 @@ g = decsg(gd, sf, ns);
 model = createpde(1);
 geometryFromEdges(model, g);
 [p, e, t] = initmesh(g, 'hmax', inf);
-pdemesh(p, e, t);
+[p, e, t] = refinemesh(g, p, e, t, 'regular'); 
+
+% pdemesh(p, e, t);
  
 % Test functions %
 u = @(x, y) -(1/pi).*cos(pi.*y);
@@ -99,4 +101,4 @@ globalBMatrix = sparse(bSparseRow, bSparseCol, bSparseEntry, size(p, 2), 1);
 % Our coefficients for u_h % 
 c = globalAMatrix\globalBMatrix;
 
-
+pdeplot(p, e, t, 'XYData', c, 'ZData', c)
