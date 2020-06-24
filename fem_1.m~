@@ -1,10 +1,13 @@
+clear all
 % Load MyDomain file
 load MyDomain.mat;
 g = decsg(gd, sf, ns);
 model = createpde(1);
 geometryFromEdges(model, g);
 [p, e, t] = initmesh(g, 'hmax', inf);
-pdemesh(p, e, t);
+%[p, e, t] = refinemesh(g, p, e, t, 'regular');
+
+% pdemesh(p, e, t);
  
 % Test functions %
 u = @(x, y) -(1/pi).*cos(pi.*y);
@@ -14,26 +17,6 @@ triangles    = size(t, 2);
 globalAIndex = 1;
 globalBindex = 1;
 triquadNodes = 8;
-
-% global basis is a slightly confusing variable. Explanation below: %
-%{ 
-In order to calculate L2 Error, we need to keep track of ALL our local
-basis functions, so we can triquad over the sum of C_i*phi_i in our
-triangles. I did not want to create an entire for loop just for this, so I 
-am creating a column vector of zeros, then I am just concatenating the 
-3x3 basis matrix to it. Thus, we ALWAYS have a column of 0's at the
-beginning, so if you want to access ALL the basis coefficients in a giant
-matrix, you do this:
-
-globalBasis(:, 2:3*triangles+1)
-
-I.e., we start from column #2 (we dont care about the zero column), then 
-we select all the way up to the last column, which is 3*(the # of triangles),
-since each triangle has 3 basis vectors, then we add 1 bc the first column
-is all zeros. So for a mesh with 2 triangles, there will be 7 total
-columns: 1 column of zeros, 3 columns for each triangle. The end.
-%}
-globalBasis  = zeros(3, 1);
 
 for i = 1 : triangles
   col = t(1:3, i);
@@ -49,7 +32,6 @@ for i = 1 : triangles
   e3 = [ 0 0 1 ]';
  
   basis = [ linsolve(basisMatrix, e1) linsolve(basisMatrix, e2) linsolve(basisMatrix, e3) ];
-  globalBasis = cat(2, globalBasis, basis);
   
   % Integral value of basis i and basis j  
   [ X, Y, Wx, Wy ] = triquad(triquadNodes, basisMatrix(:, 1:2));
@@ -90,7 +72,7 @@ for i = 1 : triangles
       bSparseCol(globalBindex) = 1;
       bSparseEntry(globalBindex) = Wx' * b_i(basis(:, m), X, Y) * Wy;
       globalBindex = globalBindex+1;
-  end 
+  end  
 end
 
 globalAMatrix = sparse(globalSparseRow, globalSparseCol, globalSparseEntry, size(p, 2), size(p, 2));
@@ -99,4 +81,32 @@ globalBMatrix = sparse(bSparseRow, bSparseCol, bSparseEntry, size(p, 2), 1);
 % Our coefficients for u_h % 
 c = globalAMatrix\globalBMatrix;
 
+
+% pdeplot(p, e, t, 'XYData', c, 'ZData', c)
+error = 0;
+L2Integrand = @(u, u_h, x, y) (u(x,y)-u_h(x,y))^2;
+for i = 1 : triangles
+  col = t(1:3, i);
+  
+  basisMatrix = [
+      p(1, col(1)) p(2, col(1)) 1; 
+      p(1, col(2)) p(2, col(2)) 1; 
+      p(1, col(3)) p(2, col(3)) 1 
+  ];
+
+  e1 = [ 1 0 0 ]';
+  e2 = [ 0 1 0 ]';
+  e3 = [ 0 0 1 ]';
+ 
+  basis = [ linsolve(basisMatrix, e1) linsolve(basisMatrix, e2) linsolve(basisMatrix, e3) ];
+  
+  localU_h = @(x, y) ...
+      c(col(1)) .* (basis(1, 1).*x + basis(2, 1).*y + basis(3,1)) ...
+    + c(col(2)) .* (basis(1, 2).*x + basis(2, 2).*y + basis(3,2)) ...
+    + c(col(3)) .* (basis(1, 3).*x+basis(2, 3).*y+basis(3,3));
+ 
+ L2SquaredError = Wx' * L2Integrand(u, localU_h, X,Y) * Wy;
+ error = error+L2SquaredError;
+end 
+sqrt(error)
 
