@@ -24,6 +24,9 @@ for iter = 1:iterations
     c           = approximation(p, e, t, f);
     error(iter) = L2Error(p, e, t, u, c);
     if(iter > 1)
-        
+        logError(iter-1) = log2(error(iter-1) / error(iter));
+    end 
     % pdeplot(p, e, t, 'XYData', c, 'ZData', c)
 end
+
+% plot(logError');

@@ -6,6 +6,10 @@
     Vars:
         - p: XY node data 
         - localNodesL: column vector of global vertices for a triangle (i.e [1 2 4]')
+    Rets:
+        - basis: a 3x3 matrix, where each column are the basis coefficients
+        - XYData: a 3x2 matrix of coordinates for vertices
+        - phi: An individual basis function as a handle ready to use
     -------------------------------------------------
 %}
 

@@ -9,6 +9,7 @@
         - t: triangle data
         - u: exact function to be approximated
         - c: constants for u_h approximation
+    Rets: the L2 Error
     -------------------------------------------------
 %}
 
