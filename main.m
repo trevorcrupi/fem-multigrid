@@ -1,3 +1,4 @@
+close all
 clear all
 % Load MyDomain file
 load MyDomain.mat;
@@ -18,9 +19,11 @@ f = @(x, y) ((-pi^2-1)/pi).*(cos(pi.*y));
 
 error    = zeros(1, iterations);
 logError = zeros(1, iterations-1);
+N        = zeros(1, iterations);
 for iter = 1:iterations
     [p, e, t] = refinemesh(g, p, e, t, 'regular');  
-    
+    N(iter)   = size(t, 2);
+    size(t, 2)
     c           = approximation(p, e, t, f);
     error(iter) = L2Error(p, e, t, u, c);
     if(iter > 1)
@@ -29,4 +32,7 @@ for iter = 1:iterations
     % pdeplot(p, e, t, 'XYData', c, 'ZData', c)
 end
 
-% plot(logError');
+% Log plot of  error over the triangles % 
+loglog(N, error);
+hold on
+loglog([10, 160], [10^-3, (10^-3)/16]);
