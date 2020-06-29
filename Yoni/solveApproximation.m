@@ -22,7 +22,7 @@ function c = solveApproximation(p,e,t,numOfTriangles)
                 localA(k,j) = Wx' * integrandFunct(localPhiCoeffs(:,k),localPhiCoeffs(:,j),X,Y) * Wy; %Why X and Y ???????
             end
         end
-
+        localA
 
         for m = 1:3
             for n = 1:3                           % Get the I, J, S for sparse-martix "globalA"
