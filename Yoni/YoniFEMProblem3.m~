@@ -3,11 +3,9 @@ load PETForYoni/PETForYoni1.mat
 load newEle/new_ele1.mat
 
 
-edge           = getEdgeMatrix(p,t);
-countForA      = 1;
-countForB      = 1;
-integrandFunct = @(basis_i, basis_j, r) [ ( curlRZKfor(basis_i(1),basis_i(2),basis_i(3)) * curlRZKfor(basis_j(1),basis_j(2),basis_j(3)) + basis_i * basis_j) *r]; % *? or .*? for final r...
-bIntegrand     = @(basis_j,r) [ ourF() * basis_j * r ];
+edge      = getEdgeMatrix(p,t);
+countForA = 1;
+countForB = 1;
 
 
 %ourF = ;
@@ -28,7 +26,8 @@ phiVector = @(basis,r,z) [ - (basis(3)/k) - (basis(1)/k).*r - (basis(2)/k).*z
                            basis(1).*r + basis(2).*z + basis(3)
                                                                0];
                                                            
-
+integrandFunct = @(basis_i, basis_j, r) [ ( curlRZKfor(basis_i(1),basis_i(2),basis_i(3)) * curlRZKfor(basis_j(1),basis_j(2),basis_j(3)) + basis_i * basis_j) *r]; % *? or .*? for final r...
+bIntegrand     = @(basis_j,r) [ ourF() * basis_j * r ];
                                                            
 
 
@@ -112,10 +111,10 @@ numOfTriangles = size(t,2);
     end
     
     
-    height  = size(p,2) + size(edge,1) ;      % Number-of-points and number-of-edges is the height (# of rows) of the square-matrix and vectors in the equation.
+    height  = size(p,2);      % Number-of-points is the height (# of rows) of the matrix and vectors in the equation.
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
-    c       = globalA\globalB;
+    c = globalA\globalB;
     
     
     
