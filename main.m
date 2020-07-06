@@ -34,5 +34,5 @@ end
 
 % Log plot of  error over the triangles % 
 loglog(N, error);
-hold on
-loglog([10, 160], [10^-3, (10^-3)/16]);
+% hold on
+%loglog([10, 160], [10^-3, (10^-3)/16]);

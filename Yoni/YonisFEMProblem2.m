@@ -21,4 +21,6 @@ for i = 1:numOfTriangles
 
     % Matrix with columns of Phi Coefficients
     localPsiCoeffs = [ linsolve(solvePsi, i1) linsolve(solvePsi, i2) linsolve(solvePsi, i3) ];
+    
+    tangent = [ p(1,p3)-p(1,p2); p(2,p3)-p(2,p2) ].*sqrt((p(1,p3)-p(1,p2)).^2+(p(2,p3)-p(2,p2)).^2);
 end
