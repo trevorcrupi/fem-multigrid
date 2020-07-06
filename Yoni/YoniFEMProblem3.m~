@@ -3,19 +3,20 @@ load PETForYoni/PETForYoni1.mat
 load newEle/new_ele1.mat
 
 
-edge      = getEdgeMatrix(p,t);
-countForA = 1;
-countForB = 1;
+edge           = getEdgeMatrix(p,t);
+countForA      = 1;
+countForB      = 1;
+integrandFunct = @(basis_i, basis_j, basisI, basisJ, r) [ ( curlRZKfor(basisI) * curlRZKfor(basisJ) + basis_i * basis_j) *r]; % *? or .*? for final r...
+bIntegrand     = @(basis_j,r) [ ourF() * basis_j * r ];
 
 
 %ourF = ;
-% curlRZKforPhi = @(U_r,U_theta,U_z) [ - ????(U_theta)
-%                                      ???(U_r)
-%                                      ???(U_theta) + U_theta/r + (k/r)*U_r ];
-
-% curlRZKforPsi = @(U_r,U_theta,U_z) [ -(k/r)*U_z
-%                                      ???(U_r) - ???(U_z)
-%                                      (k/r)*U_r ];
+curlRZKforPhi = @(basis) [   basis(2)
+                           - basis(2)/k
+                             basis(1)   ];
+curlRZKforPsi = @(basis,r,z) [ - basis(3) - basis(1).*r
+                               - basis(3)/k - 3.*(basis(1)/k).*r
+                                 basis(2) - basis(1).*z          ];
 
 %k = ;
 psiVector = @(basis,r,z) [ (basis(2)/k).*r - (basis(1)/k).*r.*z
@@ -26,8 +27,7 @@ phiVector = @(basis,r,z) [ - (basis(3)/k) - (basis(1)/k).*r - (basis(2)/k).*z
                            basis(1).*r + basis(2).*z + basis(3)
                                                                0];
                                                            
-integrandFunct = @(basis_i, basis_j, r) [ ( curlRZKfor(basis_i(1),basis_i(2),basis_i(3)) * curlRZKfor(basis_j(1),basis_j(2),basis_j(3)) + basis_i * basis_j) *r]; % *? or .*? for final r...
-bIntegrand     = @(basis_j,r) [ ourF() * basis_j * r ];
+
                                                            
 
 
@@ -54,28 +54,28 @@ numOfTriangles = size(t,2);
         for j = 1:3
             ourPhi_i = phiVector( localPhiCoeffs(:,k), X, Y );
             ourPhi_j = phiVector( localPhiCoeffs(:,j), X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPhi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPhi_j, localPhiCoeffs(:,k), localPhiCoeffs(:,j), X) * Wy;
         end
     end
     for k = 1:3
         for j = 4:6
             ourPhi_i = phiVector( localPhiCoeffs(:,k)  , X, Y );
             ourPsi_j = psiVector( localPsiCoeffs(:,j-3), X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPsi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPsi_j, localPhiCoeffs(:,k), localPsiCoeffs(:,j-3), X) * Wy;
         end
     end
     for k = 4:6
         for j = 1:3
             ourPsi_i = psiVector( localPsiCoeffs(:,k-3), X, Y );
             ourPhi_j = phiVector( localPhiCoeffs(:,j)  , X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPhi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPhi_j, localPsiCoeffs(:,k-3), localPhiCoeffs(:,j), X) * Wy;
         end
     end
     for k = 4:6
         for j = 4:6
             ourPsi_i = psiVector( localPsiCoeffs(:,k-3), X, Y );
             ourPsi_j = psiVector( localPsiCoeffs(:,j-3), X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPsi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPsi_j, localPsiCoeffs(:,k-3), localPsiCoeffs(:,j-3), X) * Wy;
         end
     end
     localA;
@@ -111,10 +111,10 @@ numOfTriangles = size(t,2);
     end
     
     
-    height  = size(p,2);      % Number-of-points is the height (# of rows) of the matrix and vectors in the equation.
+    height  = size(p,2) + size(edge,1) ;      % Number-of-points and number-of-edges is the height (# of rows) of the square-matrix and vectors in the equation.
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
-    c = globalA\globalB;
+    c       = globalA\globalB;
     
     
     

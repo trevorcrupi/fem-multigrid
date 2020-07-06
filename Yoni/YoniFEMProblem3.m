@@ -6,20 +6,12 @@ load newEle/new_ele1.mat
 edge           = getEdgeMatrix(p,t);
 countForA      = 1;
 countForB      = 1;
-integrandFunct = @(basis_i, basis_j, r) [ ( curlRZKfor(basis_i(1),basis_i(2),basis_i(3)) * curlRZKfor(basis_j(1),basis_j(2),basis_j(3)) + basis_i * basis_j) *r]; % *? or .*? for final r...
-bIntegrand     = @(basis_j,r) [ ourF() * basis_j * r ];
+integrandFunct = @(basis_i, basis_j, basisI, basisJ, r, idNum) [ getIntegrand(basis_i, basis_j, basisI, basisJ, r, idNum ] ; % [ ( curlRZKfor(basisI) * curlRZKfor(basisJ) + basis_i * basis_j) *r]; % *? or .*? for final r...
+%?????bIntegrand     = @(basis_j,r) [ ourF() * basis_j * r ];
 
 
-%ourF = ;
-% curlRZKforPhi = @(U_r,U_theta,U_z) [ - ????(U_theta)
-%                                      ???(U_r)
-%                                      ???(U_theta) + U_theta/r + (k/r)*U_r ];
+%??????ourF = ;
 
-% curlRZKforPsi = @(U_r,U_theta,U_z) [ -(k/r)*U_z
-%                                      ???(U_r) - ???(U_z)
-%                                      (k/r)*U_r ];
-
-%k = ;
 psiVector = @(basis,r,z) [ (basis(2)/k).*r - (basis(1)/k).*r.*z
                             0
                            (basis(3)/k).*r + (basis(1)/k).*r.^2 ];
@@ -55,28 +47,28 @@ numOfTriangles = size(t,2);
         for j = 1:3
             ourPhi_i = phiVector( localPhiCoeffs(:,k), X, Y );
             ourPhi_j = phiVector( localPhiCoeffs(:,j), X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPhi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPhi_j, localPhiCoeffs(:,k), localPhiCoeffs(:,j), X, Y, 1) * Wy;
         end
     end
     for k = 1:3
         for j = 4:6
             ourPhi_i = phiVector( localPhiCoeffs(:,k)  , X, Y );
             ourPsi_j = psiVector( localPsiCoeffs(:,j-3), X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPsi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPhi_i, ourPsi_j, localPhiCoeffs(:,k), localPsiCoeffs(:,j-3), X, Y, 2) * Wy;
         end
     end
     for k = 4:6
         for j = 1:3
             ourPsi_i = psiVector( localPsiCoeffs(:,k-3), X, Y );
             ourPhi_j = phiVector( localPhiCoeffs(:,j)  , X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPhi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPhi_j, localPsiCoeffs(:,k-3), localPhiCoeffs(:,j), X, Y, 3) * Wy;
         end
     end
     for k = 4:6
         for j = 4:6
             ourPsi_i = psiVector( localPsiCoeffs(:,k-3), X, Y );
             ourPsi_j = psiVector( localPsiCoeffs(:,j-3), X, Y );
-            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPsi_j, X) * Wy;
+            localA(k,j) = Wx' * integrandFunct(ourPsi_i, ourPsi_j, localPsiCoeffs(:,k-3), localPsiCoeffs(:,j-3), X, Y, 4) * Wy;
         end
     end
     localA;
