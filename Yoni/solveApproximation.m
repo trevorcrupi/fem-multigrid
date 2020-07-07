@@ -6,6 +6,7 @@ function c = solveApproximation(p,e,t,numOfTriangles)
     b_i            = @(basis, x, y) ourF(x,y).*(basis(1).*x + basis(2).*y + basis(3));
     integrandFunct = @(basisI,basisJ,x,y) (basisI(1).*basisJ(1) + basisI(2).*basisJ(2)) + (basisI(1).*x + basisI(2).*y + basisI(3)).*(basisJ(1).*x + basisJ(2).*y + basisJ(3));
 
+    
 %   numOfTriangles = size(t,2);
     for i = 1:numOfTriangles
         columnVector = t(1:3, i); % Vector with points of the triangle
@@ -22,7 +23,7 @@ function c = solveApproximation(p,e,t,numOfTriangles)
                 localA(k,j) = Wx' * integrandFunct(localPhiCoeffs(:,k),localPhiCoeffs(:,j),X,Y) * Wy; %Why X and Y ???????
             end
         end
-        localA
+        localA;
 
         for m = 1:3
             for n = 1:3                           % Get the I, J, S for sparse-martix "globalA"
