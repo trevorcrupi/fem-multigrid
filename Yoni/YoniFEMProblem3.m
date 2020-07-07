@@ -8,16 +8,16 @@ countForA      = 1;
 countForB      = 1;
 k              = 1; % Pick any non-zero integer, positive or negative. 1, -1, 2, -1; 10-(-10) For now.
 %integrandFunct = @(iFunct1, iFunct2, iFunct3, jFunct1, jFunct2, jFunct3, basisICoeffs, basisJCoeffs, r, z, k, idNum) [ getIntegrand(iFunct1, iFunct2, iFunct3, jFunct1, jFunct2, jFunct3, basisICoeffs, basisJCoeffs, r, z, k, idNum) ] ; % [ ( curlRZKfor(basisI) * curlRZKfor(basisJ) + basis_i * basis_j) *r]; % *? or .*? for final r...
-bIntegrand     = @(jFunct1,jFunct2,jFunct3,r,z) [ ( ourF_Line1.*jFunct1 + ourF_Line2.*jFunct2 + ourF_Line1.*jFunct3 ) .*r ]; %(ourF(r,z) * basis_j) * r ];
 
 U_r            = @(r,z) [ z - (1/k).*( (r.^3)/3 - (r.^2)/2 ) ];
 U_theta        = @(r,z) [ -k.*z + (r.^3)/3 - (r.^2)/2 ];
 U_z            = @(r,z) [ r ];
 
-
 ourF_Line1 = @(r,z) [ k.*(r-1) + U_r(r,z) ];
 ourF_Line2 = @(r,z) [ -2.*r+1  + U_theta(r,z) ];
 ourF_Line3 = @(r,z) [ U_z(r,z) ];
+
+bIntegrand     = @(jFunct1,jFunct2,jFunct3,r,z) [ ( ourF_Line1(r,z).*jFunct1 + ourF_Line2(r,z).*jFunct2 + ourF_Line1(r,z).*jFunct3 ) .*r ]; %(ourF(r,z) * basis_j) * r ];
 
 psiLine1 = @(basis,r,z) [ (basis(2)/k).*r - (basis(1)/k).*r.*z ];
 psiLine2 = @() 0;
@@ -117,18 +117,17 @@ numOfTriangles = size(t,2);
         
         BI(countForB) = cAndRVector(m);     % Global node number of B_m - sparse row#
         BJ(countForB) = 1;                   % Global node number of B_n - sparse column# - ONLY 1 because vector.
-        BS(countForB) = 0;
         
-        if m == 1:3
+        if 0<m<4
             bFunct_i1 = phiLine1( localPhiCoeffs(:,m), X, Y );
             bFunct_i2 = phiLine2( localPhiCoeffs(:,m), X, Y );
             bFunct_i3 = phiLine3();
-            BS(countForB) = Wx' * bIntegrand(bFunct_i, X) * Wy;
+            BS(countForB) = Wx' * bIntegrand(bFunct_i1, bFunct_i2, bFunct_i3, X, Y) * Wy;
         end
-        if m == 4:6
-            bFunct_i1 = psiLine1( localPsiCoeffs(:,m-3), X, Y );
+        if 3<m<7
+            bFunct_i1 = psiLine1( localPsiCoeffs(:,n-3), X, Y );
             bFunct_i2 = psiLine2();
-            bFunct_i3 = psiLine3( localPsiCoeffs(:,m-3), X );
+            bFunct_i3 = psiLine3( localPsiCoeffs(:,n-3), X );
             BS(countForB) = Wx' * bIntegrand(bFunct_i1, bFunct_i2, bFunct_i3, X, Y) * Wy;
         end
         countForB = countForB +1;
