@@ -1,7 +1,7 @@
 function integrandFunct = getIntegrand(iFunct1, iFunct2, iFunct3, jFunct1, jFunct2, jFunct3, basisICoeffs, basisJCoeffs, r, z, k, idNum)
 
 
-    curlRZKforPhiLine1 = @(bCoeff) [   bCoeff   ];
+    curlRZKforPhiLine1 = @(bCoeff) [ - bCoeff   ];
     curlRZKforPhiLine2 = @(bCoeff) [ - bCoeff/k ];
     curlRZKforPhiLine3 = @(aCoeff) [   aCoeff   ];
                       
