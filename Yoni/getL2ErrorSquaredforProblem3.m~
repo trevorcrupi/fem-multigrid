@@ -48,16 +48,15 @@ function error = getL2ErrorSquaredforProblem3(c,numOfTriangles,p,t,edge,iteratio
                         c(cAndRVector(1))*phiLine3()       + c(cAndRVector(2))*phiLine3()       + c(cAndRVector(3))*phiLine3()       ...
                       + c(cAndRVector(4))*psiLine3(psi4,r) + c(cAndRVector(5))*psiLine3(psi5,r) + c(cAndRVector(6))*psiLine3(psi6,r);
     
+        errorLine1 = U_r(X,Y)     - localU_hLine1(X,Y)
+        errorLine2 = U_theta(X,Y) - localU_hLine1(X,Y)
+        errorLine3 = U_z(X,Y)     - localU_hLine1(X,Y)
                   
                   
                   
                   
              
-        [X,Y,Wx,Wy]         = triquad(8, [p(1,columnVector(1)) p(2,columnVector(1)); p(1,columnVector(2)) p(2,columnVector(2)); p(1,columnVector(3)) p(2,columnVector(3))]);
-        errorLine1 = U_r(X,Y)     - localU_hLine1(X,Y);
-        errorLine2 = U_theta(X,Y) - localU_hLine1(X,Y);
-        errorLine3 = U_z(X,Y)     - localU_hLine1(X,Y);
-        
+        [X,Y,Wx,Wy]         = triquad(8, [p(1,columnVector(1)) p(2,columnVector(1)); p(1,columnVector(2)) p(2,columnVector(2)); p(1,columnVector(3)) p(2,columnVector(3))]); %triquad(8,[solvePhi(1,1) solvePhi(1,2); solvePhi(2,1) solvePhi(2,2); solvePhi(3,1) solvePhi(3,2)]);
         localL2ErrorSquared = Wx' * ( X.* [u(X,Y) - localU_h(X,Y)] ).^2 * Wy;
         
         

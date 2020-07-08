@@ -12,11 +12,12 @@ for n = 1:iterations
     
     mystr = ['PETForYoni/PETForYoni' num2str(n) '.mat'];
     load(mystr);
+    edge           = getEdgeMatrix(p,t);
     meshLevel(n)   = n;
     
     numOfTriangles(n) = size(t,2);
-    c                 = solveApproximationForProb3(p,e,t,numOfTriangles,k,n);
-    errorVector(n)    = getL2ErrorSquaredforProblem3(c,numOfTriangles(n),p,t);
+    c                 = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,n);
+    errorVector(n)    = getL2ErrorSquaredforProblem3(c,numOfTriangles(n),p,t,edge,n);
     
     if(n > 1)
         rateOfErrors(n-1) = log2( errorVector(n-1) / errorVector(n) );
