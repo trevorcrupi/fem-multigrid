@@ -3,7 +3,7 @@
 %See meshgeometry.m to change your doamin.
 
 
-mesh_level=2;
+mesh_level=6;
 
 model=createpde(1);
 [a, b, c]=meshgeometry(1);
