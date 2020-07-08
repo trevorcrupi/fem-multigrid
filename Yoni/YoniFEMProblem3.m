@@ -129,6 +129,5 @@ numOfTriangles = size(t,2);
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
     c       = globalA\globalB;
-  
  end
  
