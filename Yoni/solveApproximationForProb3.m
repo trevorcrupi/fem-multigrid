@@ -1,9 +1,11 @@
 function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum)
     
+    iterationNum;
     mystr = ['newEle/new_ele' num2str(iterationNum) '.mat'];
     load(mystr);
     
     numOfNodes     = size(p,2);
+    numOfEdges     = size(edge,1);
     countForA      = 1;
     countForB      = 1;
 
@@ -116,7 +118,6 @@ function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum
                 BS(countForB) = Wx' * bIntegrand(bFunct_i1, bFunct_i2, bFunct_i3, X, Y) * Wy;
             end
             if m > 3 && m < 7
-                % why n?
                 bFunct_i1 = psiLine1( localPsiCoeffs(:,m-3), X, Y );
                 bFunct_i2 = psiLine2();
                 bFunct_i3 = psiLine3( localPsiCoeffs(:,m-3), X );
@@ -129,7 +130,7 @@ function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum
 
 
      end
-
+    
     height  = size(p,2) + size(edge,1) ;      % Number-of-points and number-of-edges is the height (# of rows) of the square-matrix and vectors in the equation.
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);

@@ -16,7 +16,7 @@ for n = 1:iterations
     meshLevel(n)   = n;
     
     numOfTriangles(n) = size(t,2);
-    c                 = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,n);
+    c                 = solveApproximationForProb3(p,e,t,numOfTriangles(n),k,edge,n);
     errorVector(n)    = getL2ErrorSquaredforProblem3(c,numOfTriangles(n),p,t,edge,k,n);
     
     if(n > 1)
