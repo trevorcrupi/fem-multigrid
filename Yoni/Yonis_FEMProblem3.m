@@ -17,7 +17,7 @@ for n = 1:iterations
     
     numOfTriangles(n) = size(t,2);
     c                 = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,n);
-    errorVector(n)    = getL2ErrorSquaredforProblem3(c,numOfTriangles(n),p,t,edge,n);
+    errorVector(n)    = getL2ErrorSquaredforProblem3(c,numOfTriangles(n),p,t,edge,k,n);
     
     if(n > 1)
         rateOfErrors(n-1) = log2( errorVector(n-1) / errorVector(n) );
