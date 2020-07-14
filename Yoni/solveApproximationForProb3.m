@@ -25,7 +25,7 @@ function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum
     phiLine2 = @(basis,r,z) [ basis(1).*r + basis(2).*z + basis(3) ];
     phiLine3 = @() 0;
 
-    bIntegrand     = @(jFunct1,jFunct2,jFunct3,r,z) ( ourF_Line1(r,z).*jFunct1 + ourF_Line2(r,z).*jFunct2 + ourF_Line1(r,z).*jFunct3 ) .*r ;
+    bIntegrand     = @(jFunct1,jFunct2,jFunct3,r,z) ( ourF_Line1(r,z).*jFunct1 + ourF_Line2(r,z).*jFunct2 + ourF_Line3(r,z).*jFunct3 ) .*r ;
 
 
 
