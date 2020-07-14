@@ -5,6 +5,7 @@ meshLevel      = zeros(iterations,1);
 numOfTriangles = zeros(iterations,1);
 errorVector    = zeros(iterations,1);
 rateOfErrors   = zeros(iterations-1,1);
+
 k              = 1; % Pick any non-zero integer, positive or negative. 1, -1, 2, -1; 10-(-10) For now.
 
 for n = 1:iterations
