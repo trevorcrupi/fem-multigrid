@@ -31,7 +31,7 @@ function solution = GSFunction1(globalA, globalB, height, numOfNodes, edge, inpu
         end
         
         
-        U = U + invATimesProjectionFullVector; 
+        U = U + invATimesProjectionFullVector;
     end
     
     solution = U;

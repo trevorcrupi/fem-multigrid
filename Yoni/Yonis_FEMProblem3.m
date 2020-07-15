@@ -18,16 +18,16 @@ for n = 1:iterations
     c                 = solveApproximationForProb3(p,e,t,numOfTriangles(n),k,edge,n);
     
     %Before Multigrid
-%     errorVector(n)    = getL2ErrorforProblem3(c,numOfTriangles(n),p,t,edge,k,n);
-%     if(n > 1)
-%         rateOfErrors(n-1) = log2( errorVector(n-1) / errorVector(n) );
-%     end
-
-    %With GS1
     errorVector(n)    = getL2ErrorforProblem3(c,numOfTriangles(n),p,t,edge,k,n);
     if(n > 1)
-        rateOfErrors(n-1) = ( errorVector(n) / errorVector(n-1) );
+        rateOfErrors(n-1) = log2( errorVector(n-1) / errorVector(n) );
     end
+
+    %With GS1
+%     errorVector(n)    = getHrCurlErrorforProblem3(c,globalA);
+%     if(n > 1)
+%         rateOfErrors(n-1) = ( errorVector(n) / errorVector(n-1) );
+%     end
 end
 
 MeshLevel      = zeros(iterations-1,1);
