@@ -1,6 +1,6 @@
 clear all
 
-iterations     = 6;
+iterations     = 8;
 meshLevel      = zeros(iterations,1);
 numOfTriangles = zeros(iterations,1);
 errorVector    = zeros(iterations,1);

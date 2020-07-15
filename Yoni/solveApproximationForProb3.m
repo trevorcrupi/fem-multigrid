@@ -134,6 +134,6 @@ function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum
     height  = size(p,2) + size(edge,1) ;      % Number-of-points and number-of-edges is the height (# of rows) of the square-matrix and vectors in the equation.
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
-    c       = globalA\globalB;
-
+    %c       = globalA\globalB;
+    c       = GS(globalA, globalB, edge, size(p, 2));
 end
