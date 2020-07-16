@@ -1,5 +1,6 @@
-function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum)
-    
+function [c,errorConvergenceRate] = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum)
+% For "Before Multigrid": Remove "errorConvergenceRate" as function output.
+
     iterationNum;
     mystr = ['newEle/new_ele' num2str(iterationNum) '.mat'];
     load(mystr);
@@ -134,11 +135,13 @@ function c = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum
     height  = size(p,2) + size(edge,1) ;      % Number-of-points and number-of-edges is the height (# of rows) of the square-matrix and vectors in the equation.
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
-    %Before Multigrid
-    c       = globalA\globalB;
     
-%     testB = zeros(height,1);
-%     inputUVector = ones(height,1);
-%     c            = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector);
+    %Before Multigrid
+%     c       = globalA\globalB;
+    
+    %With GS1
+    testB = zeros(height,1);
+    inputUVector = ones(height,1);
+    [c,errorConvergenceRate]      = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector);
 
 end

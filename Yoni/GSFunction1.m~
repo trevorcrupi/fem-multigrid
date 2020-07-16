@@ -1,12 +1,17 @@
-function multigridC1 = applyIterations1(globalA, globalB, height, numOfNodes, edge, inputUVector)
+function solution = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector)
 
+    iterations = numOfNodes;
     U        = inputUVector;
+    errorU_iVector = zeros(iterations,1);
+    rateOfErrors2  = zeros(iterations,1);
     
-    for i = 1:numOfNodes
-        Z_i = getAdjacentEdges(i, edge, numOfNodes)  ;
-        ZDim = length(Z_i);
-        A_j = zeros(ZDim, ZDim);
+    for i = 1:iterations
+        
+        Z_i      = getAdjacentEdges(i, edge, numOfNodes);
+        ZDim     = length(Z_i);
+        A_j      = zeros(ZDim, ZDim);
         fMinusAU = globalB - globalA * U ;
+        
         
         % Fill in A_j
         for z = 1:ZDim
@@ -15,21 +20,39 @@ function multigridC1 = applyIterations1(globalA, globalB, height, numOfNodes, ed
             end
         end
         
+        
         fMinusAUAfterQ = zeros(ZDim,1);
         for j = 1:ZDim
             fMinusAUAfterQ(j) = fMinusAU(Z_i(j));
         end
         
-        invATimesProjection = inv(A_j) * fMinusAUAfterQ;
+        
+        invATimesProjection           = inv(A_j) * fMinusAUAfterQ;
         invATimesProjectionFullVector = zeros(height,1);
         for o = 1:ZDim
-            invATimesProjectionFullVector(ZDim(o)) = invATimesProjection(o);
+            invATimesProjectionFullVector(Z_i(o)) = invATimesProjection(o);
         end
         
+        
         U = U + invATimesProjectionFullVector;
+        errorU_iVector(i) = getHrCurlErrorforProblem3(U,globalA);
+        
+        if(i == 1)
+           error_0         = getHrCurlErrorforProblem3(inputUVector,globalA);
+           rateOfErrors2(n) = ( errorU_iVector(i) / error_0 );
+        end
+        if(i > 1)
+            rateOfErrors2(n) = ( errorU_iVector(i) / errorU_iVector(i-1) );
+        end
         
     end
     
-    multigridC1 = U;
+    solution = U;
+    
+    errorConvergenceRate = 0;
+    for i = 1:numOfNodes
+        errorConvergenceRate = errorConvergenceRate + rateOfErrors2(i);
+    end
+    errorConvergenceRate = errorConvergenceRate/numOfNodes
     
 end
