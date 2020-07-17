@@ -142,6 +142,6 @@ function [c,errorConvergenceRate] = solveApproximationForProb3(p,e,t,numOfTriang
     %With GS1
     testB = zeros(height,1);
     inputUVector = ones(height,1);
-    [c,errorConvergenceRate]      = GSFunction1(globalA, testB, height, numOfNodes, edge, inputUVector);
+    [c,errorConvergenceRate]      = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector);
 
 end

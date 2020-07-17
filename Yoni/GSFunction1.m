@@ -10,7 +10,7 @@ function [solution,errorConvergenceRate] = GSFunction1(globalA, globalB, height,
     i = 0;
     
     
-    while (checkForTolerance >= (10^(-15))) && (i <= numOfNodes)
+    while (checkForTolerance >= (10^(-15))) && (i < numOfNodes)
     %for i = 1:iterations
         i = i +1;
         
