@@ -1,11 +1,18 @@
-function solution = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector)
+function [solution,errorConvergenceRate] = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector)
 
-    iterations = numOfNodes;
+    %iterations = numOfNodes;
     U        = inputUVector;
-    errorU_iVector = zeros(iterations,1);
-    rateOfErrors2  = zeros(iterations,1);
+    normU_iVector = zeros(iterations,1);
+    errors2  = zeros(iterations,1);
+    norm_0         = getHrCurlErrorforProblem3(inputUVector,globalA);
+    %checkForTolerance = zeros(iterations,1);
+    checkForTolerance = 1;
+    i = 0;
     
-    for i = 1:iterations
+    
+    while checkForTolerance < 10^(-15) %&& i <= numOfNodes
+    %for i = 1:iterations
+        i = i +1;
         
         Z_i      = getAdjacentEdges(i, edge, numOfNodes);
         ZDim     = length(Z_i);
@@ -35,24 +42,35 @@ function solution = GSFunction1(globalA, globalB, height, numOfNodes, edge, inpu
         
         
         U = U + invATimesProjectionFullVector;
-        errorU_iVector(i) = getHrCurlErrorforProblem3(U,globalA);
+        
+        
+        
+        
+        
+        
+        normU_iVector(i) = getHrCurlErrorforProblem3(U,globalA);
         
         if(i == 1)
-           error_0         = getHrCurlErrorforProblem3(inputUVector,globalA);
-           rateOfErrors2(n) = ( errorU_iVector(i) / error_0 );
+           errors2(i) = ( normU_iVector(i) / norm_0 );
         end
         if(i > 1)
-            rateOfErrors2(n) = ( errorU_iVector(i) / errorU_iVector(i-1) );
+            errors2(i) = ( normU_iVector(i) / normU_iVector(i-1) );
         end
         
+        checkForTolerance = normU_iVector(i) / norm_0;
+        
+    %end
     end
+    
     
     solution = U;
     
+    
+    
     errorConvergenceRate = 0;
-    for i = 1:numOfNodes
-        errorConvergenceRate = errorConvergenceRate + rateOfErrors2(i);
+    for z = 1:i
+        errorConvergenceRate = errorConvergenceRate + errors2(z);
     end
-    errorConvergenceRate = errorConvergenceRate/numOfNodes
+    errorConvergenceRate = errorConvergenceRate/i;
     
 end

@@ -1,15 +1,18 @@
 function [solution,errorConvergenceRate] = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector)
 
     iterations = numOfNodes;
-    U        = inputUVector;
+    U          = inputUVector;
     normU_iVector = zeros(iterations,1);
     errors2  = zeros(iterations,1);
     norm_0         = getHrCurlErrorforProblem3(inputUVector,globalA);
-    checkForTolerance = zeros(iterations,1);
+    %checkForTolerance = zeros(iterations,1);
+    checkForTolerance = 1;
+    i = 0;
     
     
-    
-    for i = 1:iterations
+    while (checkForTolerance >= (10^(-15))) && (i <= numOfNodes)
+    %for i = 1:iterations
+        i = i +1;
         
         Z_i      = getAdjacentEdges(i, edge, numOfNodes);
         ZDim     = length(Z_i);
@@ -54,10 +57,10 @@ function [solution,errorConvergenceRate] = GSFunction1(globalA, globalB, height,
             errors2(i) = ( normU_iVector(i) / normU_iVector(i-1) );
         end
         
-        checkForTolerance(i) = normU_iVector(i) / norm_0;
+        checkForTolerance = normU_iVector(i) / norm_0;
         
+    %end
     end
-    
     
     
     solution = U;
@@ -65,9 +68,10 @@ function [solution,errorConvergenceRate] = GSFunction1(globalA, globalB, height,
     
     
     errorConvergenceRate = 0;
-    for i = 1:numOfNodes
-        errorConvergenceRate = errorConvergenceRate + errors2(i);
+    for l = 1:i
+        errorConvergenceRate = errorConvergenceRate + errors2(l);
     end
-    errorConvergenceRate = errorConvergenceRate/numOfNodes;
+    errorConvergenceRate = errorConvergenceRate/i;
+    i
     
 end
