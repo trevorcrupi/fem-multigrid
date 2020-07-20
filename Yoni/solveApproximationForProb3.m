@@ -1,4 +1,4 @@
-function [c,errorConvergenceRate] = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum)
+function [c,errorConvergenceRate,numOfGSIterations] = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,iterationNum)
 % For "Before Multigrid": Remove "errorConvergenceRate" as function output.
 
     iterationNum;
@@ -142,6 +142,6 @@ function [c,errorConvergenceRate] = solveApproximationForProb3(p,e,t,numOfTriang
     %With GS1
     testB = zeros(height,1);
     inputUVector = ones(height,1);
-    [c,errorConvergenceRate]      = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector);
+    [c,errorConvergenceRate,numOfGSIterations]      = GSFunction1(globalA, globalB, height, numOfNodes, edge, inputUVector);
 
 end

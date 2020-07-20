@@ -1,6 +1,6 @@
 clear all
 
-iterations     = 6;
+iterations     = 1;
 meshLevel      = zeros(iterations,1);
 numOfTriangles = zeros(iterations,1);
 errorVector    = zeros(iterations,1);
@@ -62,4 +62,4 @@ for j = 1:iterations
     ErrorConvergenceRate(j) = errorConvergenceRates(j);
 end
 
-table(MeshLevel,NumOfTriangles,NumOfGSIterations,ErrorConvergenceRate)
+table(MeshLevel,NumOfTriangles,ErrorConvergenceRate)
