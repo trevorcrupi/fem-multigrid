@@ -29,7 +29,7 @@ function solution = MG(inputUVector,globalB, meshNum, storingA, storingEdge, sto
             zeroVector = zeros(storeHeights{meshNum-1},1);
             P          = prolong(meshNum-1);
             newGlobalB = P'*(globalB - storingA{meshNum} * V1);
-            V2         = V1 + P * MG( zeroVector, newGlobalB, meshNum-1, storingA, storingEdge, storeNodeNums, storeHeights);
+            V2         = V1 + P * MG( newGlobalB, zeroVector, meshNum-1, storingA, storingEdge, storeNodeNums, storeHeights);
 
 
             % Step 3

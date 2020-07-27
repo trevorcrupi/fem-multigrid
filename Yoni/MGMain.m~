@@ -42,5 +42,4 @@ function [solution,MGErrorConvergenceRate,numOfMGIterations] = MGMain(inputUVect
         MGErrorConvergenceRate = MGErrorConvergenceRate + errors3(l);
     end
     MGErrorConvergenceRate     = MGErrorConvergenceRate/numOfMGIterations;
-
 end
