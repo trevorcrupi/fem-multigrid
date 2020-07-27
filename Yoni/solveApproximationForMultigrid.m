@@ -1,7 +1,4 @@
-function [c,errorConvergenceRate,numOfGSIterations,height] = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,meshNum,storingA,storingEdge,storeNodeNums,storeHeights)
-% For "Before Multigrid": Only "c" is function output.
-% For "Test GS1": add "errorConvergenceRate,numOfGSIterations,height" as
-%                 more function outputs.
+function [c,globalA,height,numOfNodes,MGErrorConvergenceRate,numOfMGIterations] = solveApproximationForMultigrid(p,e,t,numOfTriangles,k,edge,meshNum,storingA,storingEdge,storeNodeNums,storeHeights)
 % For "With Multigrid (Test MG)": add "globalA,height,numOfNodes,MGErrorConvergenceRate,numOfMGIterations" as more function
 %                       outputs.
 % For "With Multigrid": storingA, storingEdge, storeNodeNums,storeHeights as extra function inputs.
@@ -142,22 +139,14 @@ function [c,errorConvergenceRate,numOfGSIterations,height] = solveApproximationF
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
     
-    storingA{meshNum}     = globalA; % With Multigrid
-    storeHeights{meshNum} = height;  % With Multigrid
+    storingA{meshNum}     = globalA;
+    storeHeights{meshNum} = height;
     
     
-    %Before Multigrid
-%     c       = globalA\globalB;
-    
-    % Test GS1
-    testB                                      = zeros(height,1); % Could also use globalB, if we set the function "f" to be 0.
-    inputUVector                               = ones(height,1);
-    [c,errorConvergenceRate,numOfGSIterations] = GSFunction1(globalA, testB, height, numOfNodes, inputUVector,meshNum);
-
     % With Multigrid (Test MG)
-%     testB                                        = zeros(height,1); % Could also use globalB, if we set the function "f" to be 0.
-%     inputUVector                                 = ones(height,1);
-% %     c = MG(inputUVector,testB, meshNum, storingA, storingEdge, storeNodeNums,storeHeights);
-%     [c,MGErrorConvergenceRate,numOfMGIterations] = MG(inputUVector,testB, meshNum, storingA, storingEdge, storeNodeNums,storeHeights);
-    
+    testB                                        = zeros(height,1); % Could also use globalB, if we set the function "f" to be 0.
+    inputUVector                                 = ones(height,1);
+%     c = MG(inputUVector,testB, meshNum, storingA, storingEdge, storeNodeNums,storeHeights);
+    [c,MGErrorConvergenceRate,numOfMGIterations] = MGMain(inputUVector,testB, meshNum, storingA, storingEdge, storeNodeNums,storeHeights);
+
 end

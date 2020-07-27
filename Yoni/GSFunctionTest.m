@@ -1,7 +1,6 @@
-function [solution,errorConvergenceRate,numOfGSIterations] = GSFunction1(globalA, globalB, height, numOfNodes, inputUVector, meshNum)
+function [solution,errorConvergenceRate,numOfGSIterations] = GSFunctionTest(globalA, globalB, height, numOfNodes, inputUVector, meshNum)
 % For "Test GS1": add "errorConvergenceRate,numOfGSIterations" as
 %                 more function outputs.
-% For "With Multigrid": Runs for 1 iteration.
 
 
     U_i               = inputUVector;
@@ -33,34 +32,7 @@ function [solution,errorConvergenceRate,numOfGSIterations] = GSFunction1(globalA
             invATimesProjection                = A_j\diff;
             invATimesProjectionFullVector      = zeros(height,1);
             invATimesProjectionFullVector(Z_i) = invATimesProjection;
-            
-            
-            % Old - we optimized it. Really sped-up the code.
-%             Z_i      = getAdjacentEdges(i, edge, numOfNodes);
-%             ZDim     = length(Z_i);
-%             A_j      = zeros(ZDim, ZDim);
-%             fMinusAU = globalB - globalA * U_i ;
-% 
-%             % Fill in A_j
-%             for z = 1:ZDim
-%                 for y = 1:ZDim
-%                     A_j(z,y) = globalA(Z_i(z), Z_i(y));
-%                 end
-%             end
-% 
-%             fMinusAUAfterQ        = zeros(ZDim,1);
-%             for j = 1:ZDim
-%                 fMinusAUAfterQ(j) = fMinusAU(Z_i(j));
-%             end
-% 
-%             invATimesProjection                       = inv(A_j) * fMinusAUAfterQ;
-%             invATimesProjectionFullVector             = zeros(height,1);
-%             for o = 1:ZDim
-%                 invATimesProjectionFullVector(Z_i(o)) = invATimesProjection(o);
-%             end
-            
-
-            U_i = U_i + invATimesProjectionFullVector;
+            U_i                                = U_i + invATimesProjectionFullVector;
         end
 
         
