@@ -1,6 +1,6 @@
 clear all
 
-iterations              = 3; %Enough PETs and new_Eles to do 8.
+iterations              = 4; %Enough PETs and new_Eles to do 8.
 meshLevel               = zeros(iterations,1);
 sizeOfDim               = zeros(iterations,1);   %Test GS1
 errorConvergenceRates   = zeros(iterations,1);   %Test GS1

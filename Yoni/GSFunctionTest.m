@@ -21,7 +21,7 @@ function [solution,errorConvergenceRate,numOfGSIterations] = GSFunctionTest(glob
     while checkForTolerance >= (10^(-15))             % For "Test GS".
         numOfGSIterations    = numOfGSIterations +1;  % For "Test GS".
         
-        for i = 1:numOfNodes
+        for i = numOfNodes : -1 : 1 % 1:numOfNodes
             
             
             Z_i                                = ZMatrix(i,:);
