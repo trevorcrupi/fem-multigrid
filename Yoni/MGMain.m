@@ -15,7 +15,7 @@ function [solution,MGErrorConvergenceRate,numOfMGIterations] = MGMain(inputUVect
     while checkForToleranceMG >= (10^(-15))             % This condition for "Test MG".
         numOfMGIterations    = numOfMGIterations +1;
         
-        solution_i = MG(solution_i,globalB, meshNum, storingA, storingEdge, storeNodeNums,storeHeights);
+        solution_i = MG( solution_i, globalB, meshNum, storingA, storingEdge, storeNodeNums,storeHeights);
     
         
         % Test MG
@@ -33,7 +33,6 @@ function [solution,MGErrorConvergenceRate,numOfMGIterations] = MGMain(inputUVect
         checkForToleranceMG = normS_iVector(numOfMGIterations) / normS_0;
     end
     solution = solution_i;
-    solution
     
 
 

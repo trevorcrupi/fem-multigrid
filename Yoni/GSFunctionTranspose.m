@@ -7,7 +7,7 @@ function solution = GSFunctionTranspose(globalA, globalB, height, numOfNodes, in
     load(mystr);
     
     
-    for i = numOfNodes:1
+    for i = numOfNodes : -1 : 1
         
         Z_i                                = ZMatrix(i,:);
         Z_i                                = Z_i(Z_i > 0);
