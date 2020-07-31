@@ -111,7 +111,7 @@ for k2=1:N_ele2
        
 end
 
-P=blkdiag(A1,A2);
+P=blkdiag(A2,A1); % Minah: "A1,A2" edges then nodes. Us: "A2,A1" nodes then edges.
 
 %size(P)
 
