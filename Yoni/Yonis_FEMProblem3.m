@@ -27,6 +27,7 @@ for n = 1:iterations
     numOfTriangles(n) = size(t,2);
     
     %Before Multigrid
+    %%c                     = solveApproximationBeforeIterative(p,e,t,numOfTriangles(n),k,edge,n);
 %     c                     = solveApproximationForProb3(p,e,t,numOfTriangles(n),k,edge,n);
 %     errorVector(n)        = getL2ErrorforProblem3(c,numOfTriangles(n),p,t,edge,k,n);
 %     if(n > 1)
@@ -34,12 +35,14 @@ for n = 1:iterations
 %     end
 
     %Test GS1
+    %%[c,errorConvergenceRate,numOfGSIterations1,numOfNodesAndEdges] = solveApproximationForTestGS(p,e,t,numOfTriangles(n),k,edge,n);
     [c,errorConvergenceRate,numOfGSIterations1,numOfNodesAndEdges] = solveApproximationForProb3(p,e,t,numOfTriangles(n),k,edge,n);
     errorConvergenceRates(n)                                       = errorConvergenceRate;
     numOfGSIterations(n)                                           = numOfGSIterations1;
     sizeOfDim(n)                                                   = numOfNodesAndEdges;
     
     %With Multigrid (Test MG)
+    %%[c,globalA,height,numOfNodes,MGErrorConvergenceRate,numOfMGIterations1] = solveApproximationForMultigrid(p,e,t,numOfTriangles(n),k,edge,n,storingA,storingEdge,storeNodeNums,storeHeights);
 %     [c,globalA,height,numOfNodes,MGErrorConvergenceRate,numOfMGIterations1] = solveApproximationForProb3(p,e,t,numOfTriangles(n),k,edge,n,storingA,storingEdge,storeNodeNums,storeHeights);
 % %     MGErrorConvergenceRate,numOfMGIterations1
 %     storingA{n}                = globalA;

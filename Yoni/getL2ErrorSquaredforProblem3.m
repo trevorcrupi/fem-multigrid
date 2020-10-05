@@ -1,4 +1,4 @@
-function error = getL2ErrorforProblem3(c,numOfTriangles,p,t,edge,k,iterationNum)
+function error = getL2ErrorSquaredforProblem3(c,numOfTriangles,p,t,edge,k,iterationNum)
 
     mystr = ['newEle/new_ele' num2str(iterationNum) '.mat'];
     load(mystr);

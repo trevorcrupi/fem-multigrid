@@ -1,5 +1,5 @@
 function c = solveApproximationBeforeIterative(p,e,t,numOfTriangles,k,edge,meshNum)
-% For "Before Multigrid": Only "c" is function output.
+% For "Before Multigrid"/before-iterative: Only "c" is function output.
 
     meshNum;
     mystr = ['newEle/new_ele' num2str(meshNum) '.mat'];

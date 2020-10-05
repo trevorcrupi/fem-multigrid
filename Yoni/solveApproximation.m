@@ -45,6 +45,6 @@ function c = solveApproximation(p,e,t,numOfTriangles)
     height  = size(p,2);      % Number-of-points is the height (# of rows) of the matrix and vectors in the equation.
     globalA = sparse(AI,AJ,AS,height,height);
     globalB = sparse(BI,BJ,BS,height,1);
-    c = globalA\globalB
+    c = globalA\globalB;
 
 end

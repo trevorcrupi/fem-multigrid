@@ -1,5 +1,5 @@
 function [c,errorConvergenceRate,numOfGSIterations,height] = solveApproximationForProb3(p,e,t,numOfTriangles,k,edge,meshNum,storingA,storingEdge,storeNodeNums,storeHeights)
-% For "Before Multigrid": Only "c" is function output.
+% For "Before Multigrid"/before-iterative: Only "c" is function output.
 % For "Test GS1": add "errorConvergenceRate,numOfGSIterations,height" as
 %                 more function outputs.
 % For "With Multigrid (Test MG)": add "globalA,height,numOfNodes,MGErrorConvergenceRate,numOfMGIterations" as more function
