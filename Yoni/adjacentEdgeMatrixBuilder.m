@@ -3,8 +3,8 @@
 iterations = 8;
 
 for n = 1:iterations
-    mystr = ['PETForYoni/PETForYoni' num2str(n) '.mat'];
-    load(mystr);
+    mystr = ['PETForYoni/PETForYoni' num2str(n) '.mat']; %%%%% NOTE: Didn't update to utilize Matlab's PDE Toolbox -- but it's ok.
+    load(mystr);                                         %%%%% NOTE: Didn't update to utilize Matlab's PDE Toolbox -- but it's ok.
     edge           = getEdgeMatrix(p,t);
     
     numOfNodes = size(p,2);
