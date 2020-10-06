@@ -21,7 +21,7 @@ error    = zeros(1, iterations);
 logError = zeros(1, iterations-1);
 N        = zeros(1, iterations);
 for iter = 1:iterations
-    [p, e, t] = refinemesh(g, p, e, t, 'regular');  
+    [p, e, t] = refinemesh(g, p, e, t, 'regular');
     N(iter)   = size(t, 2);
     size(t, 2)
     c           = approximation(p, e, t, f);

@@ -13,6 +13,7 @@ g = decsg(gd, sf, ns);
 model = createpde(1);
 geometryFromEdges(model, g);
 [p, e, t] = initmesh(g, 'hmax', inf);
+%pdemesh(p,e,t)
 
 for n = 1:iterations
     

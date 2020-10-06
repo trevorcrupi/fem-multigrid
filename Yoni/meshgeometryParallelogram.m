@@ -1,6 +1,6 @@
 %Make domain for mesh in this funciton
 
-function [gd sf ns]=meshgeometry(w)
+function [gd sf ns]=meshgeometryParallelogram(w)
 
 %pdepoly([-0.5,0.5,0.5,0,-0.5],[-0.5,-0.5,0,0.5,0.5]);
 
